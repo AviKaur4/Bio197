@@ -1,0 +1,4 @@
+Three characteriscs of a good commit message
+It should be unambigious.
+Use a present tense voice.
+Have consistency in the format.
