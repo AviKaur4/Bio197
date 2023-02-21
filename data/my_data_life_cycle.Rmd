@@ -1,0 +1,14 @@
+---
+title: "my_data_life_cycle.Rmd"
+output:
+  pdf_document: default
+  html_document: default
+date: "2023-02-21"
+---
+# My Data Life Cycle
+1. **Plan**: Devise a plan that will layout out how the data will be compiled and utilized.
+2. **Collection**: Organize the collection of the data which allows for full and proper usage. 
+3. **Processing**: Ensure that the data is of utmost quality and accessible.
+4. **Management**: Organize the data as well as storing it to ensure transparency of how the data is utilized.
+5. **Analysis**: Interpretation of the data to gain sufficient insight along with recording any findings.
+6. **Visualization**: With the use of graphical representations, illustrate the data in a clear and effective manner..
