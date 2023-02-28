@@ -24,17 +24,9 @@ Introduction:
 The experimental treatment is to characterizing the effects in the system by removing the greatest size classes of herbivores successfully and measure how variation in precipitation regimes measure direction and magnitude of the effects. There are three herbivore-exclusion treatments along with an unfenced control that was applicable to the contiguous 1-ha plots. Mega is the exclusion of giraffes and elephants only, Meso is the exclusion of megaherbivores and mesoherbivores and Total is the exclusion os the exclusion of all herbivores.
 
 The different variables that were measured MEGA, MESO, and TOTAL.
-The influence of the experimental group is that it clearly organizes all of the data points for MESO, MEGA, OPEN, and TOTAL in a way that can be easily interpreted as we can observe that certain groups possess a higher height and circumference while some possess a lower height and circumference.
+The influence of the experimental group is that it clearly organizes all of the data points for MESO, MEGA, OPEN, and TOTAL in a way that can be easily interpreted as we can observe that certain groups possess a higher tree height while some possess a lower height.
 The acacias in the open plots were removed since the largest class of herbivores were removed from the experiment so there is no data to fill those open plots that are present. 
 
-
-```{r}
-library(ggplot2)
-ggplot(data = acacia, mapping = aes(x = HEIGHT, y = AXIS1, color = TREATMENT)) +
-  geom_point(size = 5) + 
-  labs(x = "Height (cm)", y = "Tree Axis 1 (cm)", title = "Acacia trees size relationships")
-
-```
 
 ## 2. Reading the data set
 
@@ -124,7 +116,7 @@ With ggplot, we create layers
 library(ggplot2)
 ggplot(data = acacia, mapping = aes(x = HEIGHT, y = AXIS1, color = TREATMENT)) +
   geom_point(size = 5) + 
-  labs(x = " Tree height", y = "Tree Axis 1", title = "Acacia trees size relationships")
+  labs(x = " Tree height (cm)", y = "Tree Axis 1 (cm)", title = "Acacia trees size relationships")
 
 ```
 ```{r}
