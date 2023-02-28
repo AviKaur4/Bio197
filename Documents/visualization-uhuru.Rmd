@@ -1,0 +1,132 @@
+---
+title: "UHURU data set visualization"
+output: pdf_document
+date: "2023-02-23"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## A tip for working with Rmarkdown
+The Working Directory inside this Rmarkdown r chunk is the following:
+```{r eval = TRUE}
+getwd()
+```
+
+Note: remember that working directories in a project and an R chunk are not always the same!
+
+## Describing the working data set
+
+UHURU data set
+
+Introduction:
+The experimental treatment is to characterizing the effects in the system by removing the greatest size classes of herbivores successfully and measure how variation in precipitation regimes measure direction and magnitude of the effects. There are three herbivore-exclusion treatments along with an unfenced control that was applicable to the contiguous 1-ha plots. Mega is the exclusion of giraffes and elephants only, Meso is the exclusion of megaherbivores and mesoherbivores and Total is the exclusion os the exclusion of all herbivores.
+
+The different variables that were measured MEGA, MESO, and TOTAL.
+The influence of the experimental group is that it clearly organizes all of the data points for MESO, MEGA, OPEN, and TOTAL in a way that can be easily interpreted as we can observe that certain groups possess a higher height and circumference while some possess a lower height and circumference.
+The acacias in the open plots were removed since the largest class of herbivores were removed from the experiment so there is no data to fill those open plots that are present. 
+
+
+```{r}
+library(ggplot2)
+ggplot(data = acacia, mapping = aes(x = HEIGHT, y = AXIS1, color = TREATMENT)) +
+  geom_point(size = 5) + 
+  labs(x = " Circumference (cm)", y = "Height (cm)", title = "Acacia trees size relationships")
+
+```
+
+## 2. Reading the data set
+
+We are reading a data set in TSV format. This is a "tab seperated values" tab file.
+To read it into R we use the function `read.csv` read.csv() with the sep argument `sep =` set to `"\t"` which represents a tab in computer language
+```{r eval = TRUE}
+read.csv(file = "../data raw/ACACIA_DREPANOLOBIUM_SURVEY.txt", sep = "\t")
+```
+
+Assign the data to a variable so we can work with it
+
+```{r eval = TRUE}
+acacia <- read.csv(file = "../data raw/ACACIA_DREPANOLOBIUM_SURVEY.txt", sep = "\t")
+```
+
+###Accessing elements of a `data.frame`
+
+It is similar to what we do for vectors, but we have two dimensions
+
+```{r}
+acacia[,6]
+str(acacia)
+```
+
+```{r}
+numbers <- 1:10
+numbers
+numbers[3:6]
+numbers[c(1,5,7,3)]
+```
+
+## 3 All the following are different ways to access a column
+
+```{r}
+acacia$SURVEY
+acacia[,1]
+acacia[, "SURVEY"]
+```
+
+#Replacing elements in a data. frame
+First we locate the elements
+```{r}
+numbers[5] <- 100
+```
+
+## 4. Quality Control check
+Check that everything is the correct class
+```{r}
+head(acacia)
+str(acacia)
+acacia
+class(acacia$HEIGHT)
+is.numeric(acacia$HEIGHT)
+acacia$HEIGHT
+as.numeric(acacia$HEIGHT)
+
+```
+
+Coercion in R computer language means that a value was forced to be a type.
+
+
+We identified that height should be numeric and is instead character
+
+```{r}
+acacia$HEIGHT <- as.numeric(acacia$HEIGHT)
+acacia$HEIGHT
+```
+
+```{r}
+acacia <- read.csv(file = "../data raw/ACACIA_DREPANOLOBIUM_SURVEY.txt",
+         sep ="\t",
+         na.strings = "dead")
+is.numeric(acacia$HEIGHT)
+head(acacia)
+#View(acacia)
+```
+## 5 Plotting data with `ggplot2`
+
+Regular way to plot in R
+```{r}
+plot(x = acacia$HEIGHT, y=acacia$AXIS1, main = "Acacia height vs axis1")
+?legend
+```
+
+With ggplot, we create layers
+```{r}
+library(ggplot2)
+ggplot(data = acacia, mapping = aes(x = HEIGHT, y = AXIS1, color = TREATMENT)) +
+  geom_point(size = 5) + 
+  labs(x = " Tree height", y = "Tree Axis 1", title = "Acacia trees size relationships")
+
+```
+```{r}
+colors()
+```
