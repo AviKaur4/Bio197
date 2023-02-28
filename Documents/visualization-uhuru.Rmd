@@ -32,7 +32,7 @@ The acacias in the open plots were removed since the largest class of herbivores
 library(ggplot2)
 ggplot(data = acacia, mapping = aes(x = HEIGHT, y = AXIS1, color = TREATMENT)) +
   geom_point(size = 5) + 
-  labs(x = " Circumference (cm)", y = "Height (cm)", title = "Acacia trees size relationships")
+  labs(x = "Height (cm)", y = "Tree Axis 1 (cm)", title = "Acacia trees size relationships")
 
 ```
 
