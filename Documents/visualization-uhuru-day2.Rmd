@@ -83,4 +83,45 @@ ggsave("acacia_by_treatment.pdf", height = 5, width = 5)
 
 ```
 
-hi
+#Scatterplots
+
+```{r}
+ggplot(data = acacia, mapping = aes(x = CIRC, y = AXIS1)) +
+geom_point() +
+labs(x = "Circumference", y = "Canopy Diameter", title = " UHURU Acacia Survey Data")
+
+ggplot(data = acacia, mapping = aes(x = CIRC, y = AXIS1)) +
+geom_point() +
+scale_x_log10() + scale_y_log10() +
+labs(x = "Circumference", y = "Canopy Diameter", title = "UHURU Acacia Survey Data")
+
+ggplot(data = acacia, mapping = aes(x = CIRC, y = AXIS1, color = ANT)) +
+geom_point() +
+labs(x = "Circumference", y = "Canopy Diameter", title = "UHURU Acacia Survey Data")
+
+ggplot(data = acacia, mapping = aes(x = CIRC, y = AXIS1, color = ANT)) +
+geom_point() +
+labs(x = "Circumference", y = "Canopy Diameter", title = "UHURU Acacia Survey Data") + facet_wrap(~ANT)
+
+ggplot(data = acacia, mapping = aes(x = CIRC, y = AXIS1, color = ANT)) +
+geom_point() +
+labs(x = "Circumference", y = "Canopy Diameter", title = "UHURU Acacia Survey Data") + geom_smooth() +
+facet_wrap(~ANT)
+```
+
+#Histograms
+
+```{r}
+ggplot(data = acacia, aes(x = ANT)) + geom_bar()
+ggplot(data = acacia, mapping = aes(x = HEIGHT)) +
+labs(x = "Height (m)", y = "Number of Acacia", title = "UHURU Acacia Survey Data")
+geom_histogram()
+
+ggplot()+
+geom_histogram(data = acacia, mapping = aes(x = AXIS1), alpha = 0.3, color = "red") + geom_histogram(data = acacia, mapping = aes(x = AXIS2), alpha = 0.3, color = "black") +
+labs(x = "Canopy Diameter (m)", y = "Number of Acacia", title = "UHURU Acacia Survey Data")
+
+ggplot()+
+geom_histogram(data = acacia, mapping = aes(x = AXIS1), alpha = 0.3, color = "red", bins = 10) + geom_histogram(data = acacia, mapping = aes(x = AXIS2), alpha = 0.3, color = "black", bins = 10) +
+labs(x = "Canopy Diameter (m)", y = "Number of Acacia", title = "UHURU Acacia Survey Data") + facet_wrap(~~TREATMENT) + facet_wrap(~~TREATMENT)
+```
