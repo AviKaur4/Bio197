@@ -69,3 +69,13 @@ trees4 <- trees[-3839,]
 trees3 <- subset(trees, canopy_area <= 400)
 ggplot(data = trees3, mapping = aes(x = canopy_area, y= HEIGHT, color = TREATMENT)) + geom_point() + facet_wrap(~SPECIES)
 ```
+Exercise 4
+```{r}
+ggplot() +
+geom_point(data = trees,
+mapping = aes(x = CIRC , y = HEIGHT), color = "gray") + geom_smooth(data = trees,
+mapping = aes(x = CIRC , y = HEIGHT), color = "gray") + geom_point(data = acacia,
+mapping = aes(x = CIRC , y = HEIGHT ), color = "red") + geom_smooth(data = acacia,
+mapping = aes(x = CIRC , y = HEIGHT ), color = "red") + scale_x_log10() +scale_y_log10() + geom_smooth(method = "lm")
+labs(x = "Circumference (cm)", y = "Height (m)", title = "Circumference to the Height Relationship of Acacia")
+```
