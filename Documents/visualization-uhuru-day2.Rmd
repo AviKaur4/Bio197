@@ -6,6 +6,7 @@ date: "2023-02-28"
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
 ```
 
 ```{r eval = TRUE}
@@ -17,7 +18,18 @@ acacia <- read.csv(file = "../data raw/ACACIA_DREPANOLOBIUM_SURVEY.txt", sep = "
 ```
 
 #Rescaling Axes
+
 ```{r}
+acacia <- read.csv(file = "../data raw/ACACIA_DREPANOLOBIUM_SURVEY.txt",
+         sep ="\t",
+         na.strings = "dead")
+is.numeric(acacia$HEIGHT)
+head(acacia)
+#View(acacia)
+```
+
+```{r}
+library(ggplot2)
 ggplot(data = acacia, mapping = aes(x = CIRC, y = HEIGHT)) +
 geom_point(size = 3, color = "blue", alpha = 0.5) +
 scale_y_log10() +

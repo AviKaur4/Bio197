@@ -13,6 +13,15 @@ library(ggplot2)
 ```
 
 ```{r}
+acacia <- read.csv(file = "../data raw/ACACIA_DREPANOLOBIUM_SURVEY.txt",
+         sep ="\t",
+         na.strings = "dead")
+is.numeric(acacia$HEIGHT)
+head(acacia)
+#View(acacia)
+```
+
+```{r}
 trees <- read_tsv("../data raw/TREE_SURVEYS.txt")
   
 ```
