@@ -113,8 +113,9 @@ str(surveys2_filtered)
 
 #Exercise 2: Data Manipulation with pipes
 ```{r}
-surveys <- read.csv(file = "../data raw/surveys.csv")
-surveys %>% select(year, month, day, species_id) -> surveys1
+read.csv(file = "../data raw/surveys.csv") %>%
+  select(year, month, day, species_id) -> surveys1 
+
 surveys %>% select(year, species_id, weight) %>%
   mutate(weight_kg = weight/1000) %>%
   filter(!is.na(weight_kg)) %>%
