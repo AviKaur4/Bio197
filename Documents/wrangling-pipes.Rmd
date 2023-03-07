@@ -119,5 +119,7 @@ read.csv(file = "../data raw/surveys.csv") %>%
 surveys %>% select(year, species_id, weight) %>%
   mutate(weight_kg = weight/1000) %>%
   filter(!is.na(weight_kg)) %>%
-  filter(species_id == "SH")
+  select(year, species_id, weight_kg) %>%
+  filter(species_id == "SH") -> surveys_final
+str(surveys_final)
 ```
