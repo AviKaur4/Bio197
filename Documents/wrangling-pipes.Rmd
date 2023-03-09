@@ -133,3 +133,71 @@ read.csv(file = "../data raw/surveys.csv") %>%
 str(final_table)
 head(final_table)
 ```
+### Piping to an argument that is not the first one.
+
+Some of the functions do not take the data as the first argument:
+For example the `lm` function
+
+```{r}
+str(surveys)
+lm(formula = weight ~ year, data = surveys)
+```
+And with a pipe
+
+```{r}
+surveys %>% 
+  lm(formula = weight ~ year, data = .) #use an underscore if you are using this pipe |>
+```
+
+Exercise 4 
+```
+surveys_DS <- filter(surveys, species_id == "DS", !is.na(weight))
+surveys_DS_lm <- lm(weight ~ year, data = surveys_DS)
+summary(surveys_DS_lm)
+```
+
+```{r}
+surveys %>% 
+  filter( species_id == "DS", !is.na(weight)) %>% 
+  lm(formula = weight ~ year, data = .) %>% 
+  summary
+  
+```
+
+### Grouping data or data aggregation
+
+To get summary statistics for variables within certain groups, we can group our data by a certain value, For that we use the function `group_by()`
+
+```{r}
+str
+group_by(.data = surveys, year)
+grouped_surveys <- group_by(surveys, year)
+str(grouped_surveys)
+```
+```{r}
+group_by(surveys, year, sex)
+```
+### Get summary statistics of groups
+The summary function create a new table that has the summary statistics that we asked for per each group on the tibble.
+```{r}
+group_by(surveys, year, sex) %>% 
+  summarize(count= n())
+```
+
+```{r}
+group_by(surveys, year) %>% 
+  summarize(mean_weight = mean(weight, na.rm = TRUE))
+```
+
+```{r}
+read.csv(file = "../data raw/surveys.csv") %>% 
+  group_by(species_id) %>% 
+  summarize(count= n())
+```
+
+```{r}
+read.csv(file = "../data raw/surveys.csv") %>% 
+  filter(species_id == "DO") %>% 
+  group_by(year) %>% 
+  summarize(mean_mass = mean(weight, na.rm = TRUE))
+```
