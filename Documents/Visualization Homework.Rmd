@@ -88,3 +88,44 @@ mapping = aes(x = CIRC , y = HEIGHT ), color = "red") + geom_smooth(data = acaci
 mapping = aes(x = CIRC , y = HEIGHT ), color = "red") + scale_x_log10() +scale_y_log10() + geom_smooth(method = "lm")
 labs(x = "Circumference (cm)", y = "Height (m)", title = "Circumference to the Height Relationship of Acacia")
 ```
+# Exercise 4 - Making the scatterplot in class
+
+```{r}
+acacia <- read.csv(file = "../data raw/ACACIA_DREPANOLOBIUM_SURVEY.txt",
+         sep ="\t",
+         na.strings = "dead")
+is.numeric(acacia$HEIGHT)
+
+trees <- read_tsv("../data raw/TREE_SURVEYS.txt",
+               col_types = list(HEIGHT = col_double(),
+                                AXIS_2 = col_double()))
+```
+Visual Quality assurance and control with the function str()
+```{r}
+str(acacia)
+is.numeric(acacia$CIRC)
+is.numeric(acacia$HEIGHT)
+```
+```{r}
+str(trees)
+is.numeric(trees$CIRC)
+is.numeric(trees$HEIGHT)
+```
+```{r}
+ggplot() +
+  geom_point(data = trees, mapping = aes(x= CIRC, y= HEIGHT), color = "gray", alpha = 0.5) + 
+  geom_point(data = acacia, mapping =aes (x = AXIS1, y=AXIS2), color = "red", alpha = 0.6)
+```
+```{r}
+ggplot() +
+  geom_point(data = trees, mapping = aes(x= CIRC, y= HEIGHT), color = "gray", alpha = 0.5) + 
+  geom_point( color = "gray") +
+  geom_point(data = acacia, mapping =aes (x = AXIS1, y=AXIS2), color = "red", alpha = 0.6) +
+    scale_x_log10() +
+    scale_y_log10() +
+    geom_smooth(method = "lm") +
+    geom_smooth(data = trees, mapping = aes(x= CIRC, y= HEIGHT), method = "lm")
+    
+    
+    
+```
