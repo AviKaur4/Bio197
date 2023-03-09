@@ -127,7 +127,9 @@ str(surveys_final)
 #Exercise 3 - Homework
 ```{r}
 read.csv(file = "../data raw/surveys.csv") %>% 
-  filter( species_id == "DS", !is.na(weight)) -> ds_data
-   ds_data %>% arrange(ds_data, year) %>% select(year, weight)
-
+  filter( species_id == "DS", !is.na(weight)) %>% 
+   arrange(year) %>% 
+  select(year, weight) -> final_table
+str(final_table)
+head(final_table)
 ```
