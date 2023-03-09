@@ -117,14 +117,13 @@ ggplot() +
   geom_point(data = acacia, mapping =aes (x = AXIS1, y=AXIS2), color = "red", alpha = 0.6)
 ```
 ```{r}
-ggplot() +
-  geom_point(data = trees, mapping = aes(x= CIRC, y= HEIGHT), color = "gray", alpha = 0.5) + 
+ggplot(data = trees, mapping = aes(x= CIRC, y= HEIGHT), color = "gray", alpha = 0.5) + 
   geom_point( color = "gray") +
-  geom_point(data = acacia, mapping =aes (x = AXIS1, y=AXIS2), color = "red", alpha = 0.6) +
+  geom_point(data = acacia, mapping =aes (x = CIRC, y=HEIGHT), color = "red", alpha = 0.6) +
     scale_x_log10() +
     scale_y_log10() +
     geom_smooth(method = "lm") +
-    geom_smooth(data = trees, mapping = aes(x= CIRC, y= HEIGHT), method = "lm")
+    geom_smooth(data = acacia, mapping = aes(x= CIRC, y= HEIGHT), method = "lm")
     
     
     
