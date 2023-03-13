@@ -1,0 +1,29 @@
+---
+title: "shrub_volume"
+output: pdf_document
+date: "2023-03-13"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(magrittr)
+library(dplyr)
+```
+
+#Homework: Exercise 8: Fix the Code
+```{r}
+read.csv(file = "../data raw/shrub-volume-data.csv") -> shrub_data #I made sure it set it so it knows that my file is in my data raw folder.
+
+shrub_data |> mutate(volume = length * width * height) |>     # I assigned shrub_data as an object so it organizes the functions I want to run such as mutate.
+  group_by(site) |> #It converts a tbl and makes it into a grouped tbl.
+  summarize(mean_volume = mean(volume))#This summarizes the data frame into just one value.
+  
+shrub_data |> mutate(volume = length * width * height) |> #This allows for the formation of new variables while still keeping the old variables in teh data frame.
+  group_by(experiment) |> #This groups rows by columns in the data frame.
+  summarize(mean_volume = mean(volume)) #In this line, I changed the max(volume)) to mean(volume) to allow it run successfully.
+  str(shrub_data)
+  exists("width")
+  help("group_by")
+  rownames(shrub_data)
+```
+
