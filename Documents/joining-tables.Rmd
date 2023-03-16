@@ -182,7 +182,7 @@ filter(species_id == "PP" | species_id == "PB") %>% filter(year >= 1995) %>% fil
 mixed2 %>%
 filter(!is.na(hindfoot_length)) %>%
 group_by(year, species_id) %>%
-summarize(mean_hindfoot_length_by_year = mean(hindfoot_length)) -> datac
+  summarize(mean(hindfoot_length))
 ```
 #Create a data frame with the "year", "genus", "species", "weight" and "plot_type" for all cases where the "genus" is "Dipodomys"
 ```{r}
