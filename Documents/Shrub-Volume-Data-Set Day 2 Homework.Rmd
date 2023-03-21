@@ -1,0 +1,96 @@
+---
+title: "Shrub-Volume-Data-Set Day 2 Homework"
+output: pdf_document
+date: "2023-03-21"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+library(magrittr)
+```
+
+#Exercise 8: Joining data tables
+1.
+```{r}
+shrub_data <- read.csv("../data raw/shrub-volume-data.csv")
+shrub_volume_experiments <- read.csv("../data raw/shrub-volume-experiments.csv") 
+shrub_volume_sites <- read.csv("../data raw/shrub-volume-sites.csv")
+```
+
+2.
+```{r}
+shrub_data_combined <- inner_join(shrub_data, shrub_volume_experiments, by = "experiment") 
+shrub_data_fullcombined <- inner_join(shrub_data_combined, shrub_volume_sites, by = "site")
+shrub_data_fullcombined
+```
+#Exercise 9: Vectors
+```{r}
+length <- c(2.2, 2.1, 2.7, 3.0, 3.1, 2.5, 1.9, 1.1, 3.5, 2.9)
+width <- c(1.3, 2.2, 1.5, 4.5, 3.1, NA, 1.8, 0.5, 2.0, 2.7)
+height <- c(9.6, 7.6, 2.2, 1.5, 4.0, 3.0, 4.5, 2.3, 7.5, 3.2)
+
+#Smallest Values of Length, Width, Height (Length = 1.1, Width = 0.5, Height = 1.5  )
+min(length, na.rm = TRUE)
+min(width, na.rm = TRUE)
+min(height, na.rm = TRUE)
+
+#The largest value of length, width and height. (Length = 3.5, Width = 4.5, Height = 9.6)
+max(length, na.rm = TRUE)
+max(width, na.rm = TRUE)
+max(height, na.rm = TRUE)
+
+#The sum of the values length, width and height, separately. (Length = 25, Width = 19.6, Height = 45.4 )
+sum(length, na.rm = TRUE)
+sum(width, na.rm = TRUE)
+sum(height, na.rm = TRUE)
+
+#The average of the length, width and height.(Length = 2.5, Width = 2.18, Height = 4.54)
+mean(length, na.rm = TRUE)
+mean(width, na.rm = TRUE)
+mean(height, na.rm = TRUE)
+
+#The volume of each shrub (length × width × height). 
+volume <- length*width*height 
+volume
+
+#The sum of the volume of all of the shrubs. (sum = 224.379)
+sum(volume, na.rm = TRUE)
+
+#A vector of the height of shrubs with lengths > 2.5.
+height2.5 <- subset(height, height > 2.5) 
+height2.5
+
+#A vector of the height of shrubs with heights > 5.
+height5 <- subset(height, height > 5) 
+height5
+
+#A vector of the heights of the first 5 shrubs (using []).
+first_5_height <- height[1:5] 
+first_5_height
+
+#A vector of the volumes of the first 3 shrubs (using []).
+first_3_volume <- volume[1:3] 
+first_3_volume
+
+#A vector of the volumes of the last 5 shrubs with the code written so that it will return the last 5 values regardless of the length of the vector
+last_5_volume <- tail(volume, n = 5)
+last_5_volume
+```
+
+#Exercise 10: Data Frames Challenge
+```{r}
+shrub_dimensions_labeled <- read.csv("../data raw/shrub-dimensions-labeled.csv")
+shrub_length <- shrub_dimensions_labeled$length
+shrub_height <- shrub_dimensions_labeled$height 
+shrub_width <- shrub_dimensions_labeled$width 
+volume_dimensions <- shrub_length*shrub_height*shrub_width
+
+dataframe_id_height <- select(shrub_dimensions_labeled, shrubID, height)
+dataframe_2nd_row <- shrub_dimensions_labeled[2,]
+dataframe_first_5_rows <- shrub_dimensions_labeled[1:5,]
+```
+
+
+
+
