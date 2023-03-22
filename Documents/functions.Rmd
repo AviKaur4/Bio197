@@ -1,0 +1,101 @@
+---
+title: "functions.rmd"
+output:
+  pdf_document: default
+  html_document: default
+date: "2023-03-21"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+```
+
+```{r}
+get_mass_from_length_theropoda <- function(length){
+  mass <- 0.73 * length ^ 3.63
+  return(mass)
+}
+```
+
+
+##Writing function - Exercise 1
+```{r}
+pounds <- 3
+pounds = 3
+yellow <- "Avi"
+red <- 3.75
+convert_pounds_to_grams <- function(pounds) {
+     grams = 453.6 * pounds
+     return(grams)
+}
+
+convert_pounds_to_grams <- function(pounds) {
+     grams = 3.75 * pounds
+     return(grams)
+}
+
+convert_pounds_to_grams(pounds = 1300)
+length(x= yellow)
+
+
+#a)   convert_pounds_to_grams - This is the object
+#b) { grams = 453.6 * pounds  return(________) } - #It is the last output of a function.
+#c) #function(________) - It is the argument
+```
+
+
+
+```{r}
+get_mass_from_length_theropoda(16)
+```
+
+
+```{r}
+get_mass_from_length <- function(length, a, b) {
+  mass <- a * length ^ b
+  return(mass)
+}
+```
+
+
+```{r}
+get_mass_from_length(length = 26, a = 214.44, b = 1.46)
+```
+
+## Why do we use functions in programming?
+
+- We already use functions a lot. Basically everything we run in R is a function. 
+- Reduce the amount of code we write.
+- No need to repeat code, so less chance of repeating errors or introducing new errors by mistyping code.
+- Helps with reproducibility: no need to repeat code, allows others to run code in a straightforward way, with accuracy.
+- Makes it easier to write modular code that you can reuse for other projects. 
+- Makes it easier to run code and remember it. 
+- It allows to organize analysis better, by putting code intended to run something together in the same function. 
+
+## Combining Functions Exercise
+```{r}
+kg = 5
+convert_kg_to_pounds <- function(kg= 5) {
+  pounds = 2.205 * kg
+  return(pounds)
+}
+
+convert_kg_to_pounds(kg = 5)
+convert_kg_to_pounds(50)
+
+get_mass_from_length(length = 12, a = 10.95, b = 2.64) %>% 
+  convert_kg_to_pounds()
+
+
+length_in_pounds <- function(length, a, b){
+  get_mass_from_length(length = length, a = 10.95, b = 2.64) %>% 
+  convert_kg_to_pounds()
+}
+get_mass_from_length(length = 12, a = 10.95, b = 2.64)
+
+```
+```{r}
+length_in_pounds(length = 35, a = 13, b = 1.3)
+```
+
