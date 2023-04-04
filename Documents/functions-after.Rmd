@@ -1,0 +1,52 @@
+---
+title: "functions-after"
+output:
+  pdf_document: default
+  html_document: default
+date: "2023-04-01"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+```
+
+```{r}
+surveys <- read.csv(file = "../data raw/surveys.csv")
+species <- read.csv (file = "../data raw/species.csv")
+plots <- read.csv(file = "../data raw/plots.csv")
+```
+
+
+```{r}
+mixed <- inner_join(surveys, species, by = "species_id")
+```
+
+```{r}
+library(ggplot2)
+```
+
+
+```{r}
+object <- function(mixed, genus_name, species_name) { mixed %>%
+select(year, genus, species) %>%
+filter(genus == genus_name, species == species_name) %>% group_by(year) %>%
+summarise(count = n()) -> result_data_frame
+return(result_data_frame) }
+```
+
+```{r}
+Dipodomys_merriami <- object(mixed, "Dipodomys", "merriami")
+ggplot(data = Dipodomys_merriami, mapping = aes(x = year, y = count)) +
+geom_point() +
+labs(x = "Year", y = "Count", title = "Dipodomys merriami - Time Series by Year")
+```
+
+```{r}
+Chaetodipus_penicillatus <- object(mixed, "Chaetodipus", "penicillatus") 
+ggplot(data = Chaetodipus_penicillatus, mapping = aes(x = year, y = count)) +
+geom_point(size = 1, color = "blue") +
+geom_line(size = 2, color = "blue") +
+labs(x = "Year", y = "Number of Individuals", title = "Chaetodipus penicillatus - Time Series by Year")
+```
+
