@@ -129,6 +129,7 @@ sapply(theropoda_lengths, mass_from_length_max)
 #Homework
 ```{r}
 dinosaur_lengths <- read.csv(file = "../data raw/dinosaur_lengths.csv")
+head(dinosaur_lengths)
 ```
 
 ```{r}
@@ -158,14 +159,24 @@ mapply(get_mass_from_length_by_name, length = dinosaur_lengths$lengths, dinosaur
 ```{r}
 dinosaur_lengths %>% 
 rowwise %>% 
-mutate(masses = get_mass_from_length_by_name(lengths, species))
+mutate(masses = get_mass_from_length_by_name(lengths, species))-> dino_masses
+  head(dino_masses) 
 ```
 
 ```{r}
 library("ggplot2")
-ggplot(data = dinosaur_lengths, mapping = aes(x = lengths)) +
+ggplot(data = dino_masses, mapping = aes(x = masses)) +
 geom_histogram() +
 facet_wrap(~species)
+
+head(dinosaur_lengths)
+
+
+dino_masses %>%
+  filter(!is.na(masses)) %>% 
+  ggplot() +
+  geom_histogram(mapping = aes(x = masses, color = species)) +
+  facet_wrap(~species)
 ```
 
 
