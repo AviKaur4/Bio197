@@ -1,0 +1,171 @@
+---
+title: "apply_functions"
+output:
+  pdf_document: default
+  html_document: default
+date: "2023-04-04"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+library(magrittr)
+```
+
+```{r}
+?lapply
+?mapply
+```
+The `apply` functions allow us to apply a function to a vector or list of values iteratively.
+This helps minimize errors in code and makes the analyses more efficient.
+ With lapply() and sapply functions, we can only provide one argument to iterate on 
+ 
+ With mapply(), we can provide multiple arguments to iterate. It probably also returns a vector or simpflied data structure as result.
+
+`sapply()` function simpflies the output to a vector (or the simplest data structure possible), while `lapply()` returns an output in the form of a list. 
+
+```{r}
+get_mass_from_length_theropoda <- function(length){
+  mass <- 0.73 * length ^ 3.63
+  return(mass)
+}
+```
+
+```{r}
+theropoda_lengths <- c(17.8013631070471, 20.3764452071665, 14.0743486294308, 25.65782386974, 26.0952008049675, 20.3111541103134, 17.5663244372533, 11.2563431277577, 20.081903202614, 18.6071626441984, 18.0991894513166, 23.0659685685892, 20.5798853467837, 25.6179254233558, 24.3714331573996, 26.2847248252537, 25.4753783544473, 20.4642089867304, 16.0738256364701, 20.3494171706583, 19.854399305869, 17.7889814608919, 14.8016421998303, 19.6840911485379, 19.4685885050906, 24.4807784966691, 13.3359960054899, 21.5065994598917, 18.4640304608411, 19.5861532398676, 27.084751999756, 18.9609366301798, 22.4829168046521, 11.7325716149514, 18.3758846100456, 15.537504851634, 13.4848751773738, 7.68561192214935, 25.5963348603783, 16.588285389794)
+```
+
+```{r}
+get_mass_from_length_theropoda(length = theropoda_lengths)
+```
+
+```{r}
+theropoda_masses <- get_mass_from_length_theropoda(length = theropoda_lengths)
+
+mylist <- (theropoda_masses)
+second_list <- c(mylist, list(c("Luna", "Avi","Anita")))
+second_list[[1]]
+
+data.frame(theropoda_masses, c("Anita", "Avi", "Luna", "Maria"))
+```
+
+
+
+```{r}
+mass_from_length <- function(length, a,b){
+  mass <- 0.73 * length ^ 3.63
+  return(mass)
+}
+new_masses <-mass_from_length(length = theropoda_lengths)
+#rm(new_lengths) # The rm function allows to remove objects from the R environment.
+
+theropoda_masses == new_masses
+all(theropoda_masses == new_masses) # tests that all values in a logica vector are equal to TRUE
+all.equal(theropoda_masses, new_masses)
+```
+
+```{r}
+a_values <- c(0.759, 0.751, 0.74, 0.746, 0.759, 0.751, 0.749, 0.751, 0.738, 0.768, 0.736, 0.749, 0.746, 0.744, 0.749, 0.751, 0.744, 0.754, 0.774, 0.751, 0.763, 0.749, 0.741, 0.754, 0.746, 0.755, 0.764, 0.758, 0.76, 0.748, 0.745, 0.756, 0.739, 0.733, 0.757, 0.747, 0.741, 0.752, 0.752, 0.748)
+```
+
+```{r}
+b_values <- c(3.627, 3.633, 3.626, 3.633, 3.627, 3.629, 3.632, 3.628, 3.633, 3.627, 3.621, 3.63, 3.631, 3.632, 3.628, 3.626, 3.639, 3.626, 3.635, 3.629, 3.642, 3.632, 3.633, 3.629, 3.62, 3.619, 3.638, 3.627, 3.621, 3.628, 3.628, 3.635, 3.624, 3.621, 3.621, 3.632, 3.627, 3.624, 3.634, 3.621)
+```
+
+```{r}
+mass_from_length <- function(length = theropoda_lengths, a = a_values, b=  b_values){
+  mass <- a * length ^ b
+  return(mass)
+}
+```
+
+`<<-` the scope operator or double arrow, allows creating and modifying objects in parent variables
+
+```{r}
+dino_data <- data.frame(theropoda_lengths, a_values, b_values) %>% mutate(massses = get_mass_from_length_theropoda(theropoda_lengths)) 
+print(dino_data)
+```
+
+```{r error=TRUE}
+
+theropoda_lengths < 20
+
+mass_from_length_max <- function(length) {
+  if(length < 20) {
+    mass <- 0.73 * length ^ 3.63
+    return(mass)
+    } else {
+      return(NA)
+    }
+    }
+
+    
+    mass_from_length_max <- function(length) {
+  if(length < 20) {
+    mass <- 0.73 * length ^ 3.63
+    mass <-NA
+    }
+    }
+    
+    
+mass_from_length_max <- function(length) {
+  if(length < 20) {
+    mass <- 0.73 * length ^ 3.63
+    return(mass)
+  }
+}
+
+```
+
+```{r error=TRUE}
+get_mass_from_length_theropoda(length = theropoda_lengths)
+```
+
+```{r}
+sapply(theropoda_lengths, mass_from_length_max)
+```
+
+
+#Homework
+```{r}
+dinosaur_lengths <- read.csv(file = "../data raw/dinosaur_lengths.csv")
+```
+
+```{r}
+get_mass_from_length_by_name <- function(length, dinosaur_name) {
+if (dinosaur_name == "Stegosauria") {
+a <- 10.95
+b <- 2.64
+} else if (dinosaur_name == "Theropoda") {
+a <- 0.73
+b <- 3.63
+} else if (dinosaur_name == "Sauropoda") {
+a <- 214.44
+b <- 1.46 
+} else {
+a = NA
+b = NA
+}
+mass <- a * length^b
+return(mass)
+}
+```
+
+```{r}
+mapply(get_mass_from_length_by_name, length = dinosaur_lengths$lengths, dinosaur_name = dinosaur_lengths$species)
+```
+
+```{r}
+dinosaur_lengths %>% 
+rowwise %>% 
+mutate(masses = get_mass_from_length_by_name(lengths, species))
+```
+
+```{r}
+library("ggplot2")
+ggplot(data = dinosaur_lengths, mapping = aes(x = lengths)) +
+geom_histogram() +
+facet_wrap(~species)
+```
+
+
