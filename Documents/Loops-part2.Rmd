@@ -1,0 +1,72 @@
+---
+title: "Loops-Part 2"
+output:
+  pdf_document: default
+  html_document: default
+date: "2023-04-11"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+```
+
+```{r}
+dinosaur_lengths <- read.csv(file = "../data raw/dinosaur_lengths.csv")
+head(dinosaur_lengths)
+```
+
+
+```{r}
+get_mass_from_length_by_name <- function(length, dinosaur_name) {
+if (dinosaur_name == "Stegosauria") {
+a <- 10.95
+b <- 2.64
+} else if (dinosaur_name == "Theropoda") {
+a <- 0.73
+b <- 3.63
+} else if (dinosaur_name == "Sauropoda") {
+a <- 214.44
+b <- 1.46 
+} else {
+a = 25.37
+b = 2.49
+}
+mass <- a * length^b
+return(mass)
+}
+```
+
+
+```{r}
+lengths <- dinosaur_lengths$lengths
+species <-dinosaur_lengths$species
+tot_mass <- vector(length = length(lengths))
+tot_mass
+head(tot_mass)
+for(i in 1:length(species)){
+  tot_mass[i] <- get_mass_from_length_by_name(lengths[i], species[i])
+}
+
+head(tot_mass)
+dinosaur_lengths %>% mutate(tot_mass = tot_mass)
+head(tot_mass)
+dinosaur_lengths %>%
+  group_by(species) %>% 
+  summarise(mean_mass = mean(tot_mass)) -> mass_species
+```
+
+```{r error = TRUE}
+library(ggplot2)
+unzip("individual_collar_data.zip")
+
+data_files <- list.files(pattern = "collar-data-.*.txt")
+
+for(i in 1:(collar-data-)) {                              # Printing ggplot within for-loop
+  print(ggplot(data, aes(x = long, y = lat[ , i])) +
+          geom_point())
+}
+
+```
+
+
