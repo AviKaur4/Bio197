@@ -1,0 +1,247 @@
+---
+title: "trees"
+output:
+  pdf_document: default
+  html_document: default
+date: "2023-04-18"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+library(stats)
+library(ade4)
+library(ape)
+library(adegenet)
+library(phangorn)
+```
+#install.packages("adegenet", dep=TRUE)
+#install.packages("phangorn", dep=TRUE)
+
+
+```{r}
+dna <- fasta2DNAbin(file="http://adegenet.r-forge.r-project.org/files/usflu.fasta")
+dna
+```
+```{r}
+annot <- read.csv("http://adegenet.r-forge.r-project.org/files/usflu.annot.csv", header=TRUE, row.names=1)
+annot
+```
+
+```{r}
+D <- dist.dna(dna, model = "TN93")
+length(D) #number of pairwise distances, computed as n(n-1)/2
+```
+```{r}
+temp <- as.data.frame(as.matrix(D))
+table.paint(temp, cleg=0, clabel.row=.5, clabel.col=.5)
+```
+```{r}
+tre <- nj(D)
+class(tre)
+```
+
+```{r}
+tre <- ladderize(tre)
+tre # tells us what the tree will look like but doesn't show the actual construction
+```
+```{r}
+plot(tre, cex = 0.6)
+title("A Simple NJ Tree")
+```
+```{r}
+# or 
+h_cluster <- hclust(D, method = "average", members = NULL) # method = average is used for UPGMA, members can be equal to NULL or a vector with a length of size D
+plot(h_cluster, cex = 0.6)
+```
+```{r}
+plot(tre, show.tip=FALSE) # gets rid of the labels on the end, refer to the first tree depicted above
+title("Unrooted NJ tree")
+myPal <- colorRampPalette(c("red","yellow","green","blue"))
+tiplabels(annot$year, bg=num2col(annot$year, col.pal=myPal), cex=.5) #we use the annot dataset to get our years
+temp <- pretty(1993:2008, 5)
+legend("bottomleft", fill=num2col(temp, col.pal=myPal), leg=temp, ncol=2)
+```
+```{r}
+plot(tre, type = "unrooted", show.tip = FALSE)
+title("Unrooted NJ Tree")
+tiplabels(tre$tip.label, bg = num2col(annot$year, col.pal = myPal), cex = 0.5)
+
+```
+```{r}
+head(annot)
+
+```
+
+```{r}
+#This section was more diffcicult to complete.
+tre2 <- root(tre, out = 1)
+tre2 <- ladderize(tre2)
+plot(tre2, show.tip=FALSE, edge.width=2)
+title("Rooted NJ tree")
+tiplabels(tre$tip.label, bg=transp(num2col(annot$year, col.pal=myPal),.7), cex=.5, fg="transparent")
+axisPhylo()
+temp <- pretty(1993:2008, 5)
+legend("topright", fill=transp(num2col(temp, col.pal=myPal),.7), leg=temp, ncol=2)
+```
+```{r}
+x <- as.vector(D)
+y <- as.vector(as.dist(cophenetic(tre2)))
+plot(x, y, xlab="original pairwise distances", ylab="pairwise distances on the tree", main="Is NJ appropriate?", pch=20, col=transp("black",.1), cex=3)
+abline(lm(y~x), col="red")
+```
+```{r}
+cor(x,y)^2
+```
+
+```{r}
+tre3 <- as.phylo(hclust(D,method="average"))
+y <- as.vector(as.dist(cophenetic(tre3)))
+plot(x, y, xlab="original pairwise distances", ylab="pairwise distances on the tree", main="Is UPGMA appropriate?", pch=20, col=transp("black",.1), cex=3)
+abline(lm(y~x), col="red")
+```
+```{r}
+cor(x,y)^2
+```
+
+```{r}
+plot(tre3, cex=.5)
+title("UPGMA tree")
+```
+
+```{r}
+myBoots <- boot.phylo(tre2, dna, function(e) root(nj(dist.dna(e, model = "TN93")),1))
+myBoots
+```
+```{r}
+plot(tre2, show.tip=FALSE, edge.width=2)
+title("NJ tree + bootstrap values")
+tiplabels(frame="none", pch=20, col=transp(num2col(annot$year, col.pal=myPal),.7), cex=3, fg="transparent")
+16
+```
+
+```{r error = TRUE}
+axisPhylo()
+temp <- pretty(1993:2008, 5)
+legend("topright", fill=transp(num2col(temp, col.pal=myPal),.7), leg=temp, ncol=2)
+nodelabels(myBoots, cex=.6)
+# I am unsure why it is giving me an error for the axisPhylo() function
+```
+
+```{r}
+#This section was more diffcult to complete but I was able to figure it out. 
+temp <- tre2
+N <- length(tre2$tip.label)
+toCollapse <- match(which(myBoots<70)+N, temp$edge[,2])
+temp$edge.length[toCollapse] <- 0
+tre3 <- di2multi(temp, tol=0.00001)
+plot(tre3, show.tip=FALSE, edge.width=2)
+title("NJ tree after collapsing weak nodes")
+tiplabels(tre3$tip.label, bg=transp(num2col(annot$year, col.pal=myPal),.7), cex=.5, fg="transparent")
+axisPhylo()
+temp <- pretty(1993:2008, 5)
+legend("topright", fill=transp(num2col(temp, col.pal=myPal),.7), leg=temp, ncol=2)
+```
+
+```{r}
+dna2 <- as.phyDat(dna) #assign the original dna sequences data as a phyDat object...
+class(dna2) #ensure that new dataframe "dna2" is in phyDat format
+dna2
+```
+
+```{r}
+tre.ini <- nj(dist.dna(dna,model="raw"))
+tre.ini
+```
+```{r}
+parsimony(tre.ini, dna2)
+```
+
+```{r}
+tre.pars <- optim.parsimony(tre.ini, dna2)
+```
+
+```{r}
+tre.pars
+```
+
+```{r}
+parsimony(tre.pars, dna2)
+```
+
+```{r}
+myPal <- colorRampPalette(c("red","yellow","green","blue"))
+```
+
+```{r}
+library(ape)
+plot(tre.pars, type="unr", show.tip=FALSE, edge.width=2)
+title("Maximum-parsimony tree")
+tiplabels(tre.pars$tip.label, bg=transp(num2col(annot$year, col.pal=myPal),.7), cex=.5, fg="transparent")
+temp <- pretty(1993:2008, 5)
+legend("bottomright", fill=transp(num2col(temp, col.pal=myPal),.7), leg=temp, ncol=2, bg=transp("white"))
+```
+```{r}
+tre.ini <- nj(dist.dna(dna,model="TN93"))
+```
+
+```{r}
+pml(tre.ini, dna2, k=4)
+```
+```{r}
+table(as.character(dna2))
+```
+```{r}
+na.posi <- which(apply(as.character(dna),2, function(e) any(!e %in% c("a","t","g","c"))))
+```
+
+```{r}
+temp <- apply(as.character(dna),2, function(e) sum(!e %in% c("a","t","g","c")))
+plot(temp, type="l", col="blue", xlab="Position in HA segment", ylab="Number of NAs")
+```
+```{r}
+dna3 <- dna[,-na.posi]
+```
+
+```{r}
+table(as.character(dna3))
+```
+
+```{r}
+dna4 <- as.phyDat(dna3)
+```
+
+```{r}
+tre.ini <- nj(dist.dna(dna3,model="TN93"))
+fit.ini <- pml(tre.ini, dna4, k=4)
+```
+
+```{r}
+fit.ini
+```
+```{r}
+fit <- optim.pml(fit.ini, optNni=TRUE, optBf=TRUE, optQ=TRUE, optGamma=TRUE)
+fit
+```
+```{r}
+anova(fit.ini, fit)
+```
+```{r}
+AIC(fit.ini)
+AIC(fit)
+```
+
+```{r}
+tre4 <- root(fit$tree,1)
+tre4 <- ladderize(tre4)
+plot(tre4, show.tip=FALSE, edge.width=2)
+title("Maximum-likelihood tree")
+tiplabels(annot$year, bg=transp(num2col(annot$year, col.pal=myPal),.7), cex=.5, fg="transparent")
+axisPhylo()
+temp <- pretty(1993:2008, 5)
+legend("topright", fill=transp(num2col(temp, col.pal=myPal),.7), leg=temp, ncol=2)
+```
+
