@@ -1,0 +1,71 @@
+---
+title: "Tree from Open Tree"
+output: html_document
+date: "2023-04-20"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(ape) # Analysis, Phylogenetics , and Evolution R package
+#install.packages("rotl")
+library(rotl) # an R interface for the Open Tree of Life
+
+```
+
+Insects- 1 million named species
+Mammals - 5k named species
+Flowering plants: 200k named species
+
+### Read a newick tree from the Open Tree of Life'
+
+The following function can only read trees in newick format. Make sure your file is a newick file. 
+If you got your tree from the Phylesystem 
+
+```{r}
+tree <- read.tree(file = "../data raw/Weigmann_2009.tre")
+```
+
+Now plot the tree:
+```{r, fig.height= 10, fig.width =10 }
+plot(tree, cex = 0.6)
+mtext(text = "Weigmann 2009 OpenTree tree")
+```
+
+#We can also use a url of a tree to read a tree into R. We will provide the URL in the argument `file =`
+In this case, we do nor have to keep a copy of the file, we can just download it directly
+The url is “http://ape-package.ird.fr/APER/APER2/primfive.tre”:
+
+```{r}
+?read.tree
+small_tree <- read.tree(file = "http://ape-package.ird.fr/APER/APER2/primfive.tre")
+```
+
+The R structure of a phylogenetic tree
+
+### Getting a tree for your species from the Open Tree of Life
+
+
+The Open Tree of Like has tools that allow to match the names of a group or species to there unfied taxonomy so that we can look for information on their databases. 
+
+If we are doing this in R, we are using the `tnrs_match_names()` from the package `rotl`"; tnrs stands for taxonomic name resolution service:
+
+```{r}
+tnrs <- tnrs_match_names(names = "amphibians")
+class(tnrs)
+```
+
+What is the difference we have in `search_string` and `unique_name`
+
+One is the search string and the other is the scientific taxonomic name from the Open Tree of Life unified Taxonomy (OTT).
+
+
+We can use the unique number identifier from OTT to get information for that taxon. 
+
+To get a tree we can use the function `tol_subtree()`
+
+```{r}
+tol_subtree(ott_id = tnrs$ott_id)
+```
+
+Homework: Try to get OTT id for my organism
