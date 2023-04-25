@@ -1,6 +1,8 @@
 ---
 title: "Tree from Open Tree"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 date: "2023-04-20"
 ---
 
@@ -69,3 +71,13 @@ tol_subtree(ott_id = tnrs$ott_id)
 ```
 
 Homework: Try to get OTT id for my organism
+
+```{r}
+tnrs4 <- tnrs_match_names(names = "Anura")
+class(tnrs)
+```
+
+```{r}
+tol_subtree(ott_id = tnrs4$ott_id)
+```
+
